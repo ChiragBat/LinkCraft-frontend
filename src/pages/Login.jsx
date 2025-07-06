@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { loginUser } from "../api/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../api/AuthContext";
 
 function Login() {
+  const { setToken } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
 
@@ -10,7 +12,7 @@ function Login() {
     e.preventDefault();
     try {
       const data = await loginUser(form);
-      localStorage.setItem("token", data.token);
+      setToken(data.token);
       console.log("Logged in", data);
       navigate("/dashboard");
     } catch (err) {
